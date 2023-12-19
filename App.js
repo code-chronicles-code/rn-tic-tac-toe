@@ -5,20 +5,32 @@ import { useReducer } from 'react';
 import make2dArray from './make2dArray';
 import Board from './Board';
 import copy2dArray from './copy2dArray';
+import computeTicTacToeResult from './computeTicTacToeResult';
+import GameDescription from './GameDescription';
+import getPlayerToMove from './getPlayerToMove';
 
 const BOARD_SIZE = 3;
 
 function reducer(state, action) {
   switch (action.type) {
     case 'make-move': {
+      if (state.isGameOver) {
+        return state;
+      }
+
       const newBoard = copy2dArray(state.board);
-      newBoard[action.rowIndex][action.columnIndex] =
-        state.moveCount % 2 === 0 ? 'X' : 'O';
+      newBoard[action.rowIndex][action.columnIndex] = getPlayerToMove(
+        state.moveCount,
+      );
+
+      const { isGameOver, winner } = computeTicTacToeResult(newBoard);
 
       return {
         ...state,
         board: newBoard,
         moveCount: state.moveCount + 1,
+        isGameOver,
+        winner,
       };
     }
 
@@ -34,6 +46,8 @@ function makeInitialState() {
   return {
     board: make2dArray(BOARD_SIZE, BOARD_SIZE, null),
     moveCount: 0,
+    isGameOver: false,
+    winner: null,
   };
 }
 
@@ -44,7 +58,12 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.title}>Tic-Tac-Toe</Text>
       <Board board={state.board} dispatch={dispatch} />
-      {state.moveCount === BOARD_SIZE ** 2 ? (
+      <GameDescription
+        winner={state.winner}
+        isGameOver={state.isGameOver}
+        moveCount={state.moveCount}
+      />
+      {state.isGameOver ? (
         <Button
           title="New Game"
           onPress={() => dispatch({ type: 'new-game' })}
