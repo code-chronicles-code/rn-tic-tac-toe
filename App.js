@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useReducer } from 'react';
 
 import make2dArray from './make2dArray';
@@ -67,12 +67,14 @@ export default function App() {
         isGameOver={state.isGameOver}
         moveCount={state.moveCount}
       />
-      {state.isGameOver ? (
-        <Button
-          title="New Game"
+      {state.isGameOver && (
+        <TouchableOpacity
           onPress={() => dispatch({ type: 'new-game' })}
-        />
-      ) : null}
+          style={styles.newGameButton}
+        >
+          <Text style={styles.newGameButtonText}>New Game</Text>
+        </TouchableOpacity>
+      )}
       <StatusBar style="auto" />
     </View>
   );
@@ -85,6 +87,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
+  },
+  newGameButton: {
+    position: 'absolute',
+    bottom: 100,
+    padding: 12,
+    borderRadius: 8,
+    backgroundColor: 'blue',
+  },
+  newGameButtonText: {
+    fontSize: 20,
+    color: 'white',
   },
   title: {
     fontSize: 24,
