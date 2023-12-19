@@ -1,22 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 import { useReducer } from 'react';
 
 import make2dArray from './make2dArray';
 import Board from './Board';
 import copy2dArray from './copy2dArray';
 
+const BOARD_SIZE = 3;
+
 function reducer(state, action) {
   switch (action.type) {
     case 'make-move': {
       const newBoard = copy2dArray(state.board);
-      newBoard[action.rowIndex][action.columnIndex] = state.playerToMove;
+      newBoard[action.rowIndex][action.columnIndex] =
+        state.moveCount % 2 === 0 ? 'X' : 'O';
 
       return {
         ...state,
         board: newBoard,
-        playerToMove: state.playerToMove === 'X' ? 'O' : 'X',
+        moveCount: state.moveCount + 1,
       };
+    }
+
+    case 'new-game': {
+      return makeInitialState();
     }
   }
 
@@ -25,8 +32,8 @@ function reducer(state, action) {
 
 function makeInitialState() {
   return {
-    board: make2dArray(3, 3, null),
-    playerToMove: 'X',
+    board: make2dArray(BOARD_SIZE, BOARD_SIZE, null),
+    moveCount: 0,
   };
 }
 
@@ -37,6 +44,12 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.title}>Tic-Tac-Toe</Text>
       <Board board={state.board} dispatch={dispatch} />
+      {state.moveCount === BOARD_SIZE ** 2 ? (
+        <Button
+          title="New Game"
+          onPress={() => dispatch({ type: 'new-game' })}
+        />
+      ) : null}
       <StatusBar style="auto" />
     </View>
   );
