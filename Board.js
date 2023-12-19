@@ -2,7 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import Row from './Row';
 
-export default function Board({ board, dispatch }) {
+export default function Board({ board, dispatch, isGameOver }) {
   return (
     <View style={styles.container}>
       {board.map((row, rowIndex) => (
@@ -10,6 +10,7 @@ export default function Board({ board, dispatch }) {
           key={rowIndex}
           cellValues={row}
           dispatch={dispatch}
+          isGameOver={isGameOver}
           rowIndex={rowIndex}
         />
       ))}

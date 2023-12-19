@@ -57,7 +57,11 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tic-Tac-Toe</Text>
-      <Board board={state.board} dispatch={dispatch} />
+      <Board
+        board={state.board}
+        isGameOver={state.isGameOver}
+        dispatch={dispatch}
+      />
       <GameDescription
         winner={state.winner}
         isGameOver={state.isGameOver}
