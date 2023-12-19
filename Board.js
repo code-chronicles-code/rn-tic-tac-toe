@@ -2,11 +2,16 @@ import { StyleSheet, View } from 'react-native';
 
 import Row from './Row';
 
-export default function Board({ board }) {
+export default function Board({ board, dispatch }) {
   return (
     <View style={styles.container}>
       {board.map((row, rowIndex) => (
-        <Row key={rowIndex} cellValues={row} />
+        <Row
+          key={rowIndex}
+          cellValues={row}
+          dispatch={dispatch}
+          rowIndex={rowIndex}
+        />
       ))}
     </View>
   );
