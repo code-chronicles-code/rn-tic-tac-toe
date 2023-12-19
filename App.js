@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useReducer } from 'react';
 
 import make2dArray from './make2dArray';
+import Board from './Board';
 
 function reducer(state, action) {
   return state;
@@ -10,7 +11,7 @@ function reducer(state, action) {
 
 function makeInitialState() {
   return {
-    board: make2dArray(3, 3, null),
+    board: make2dArray(3, 3, 'X'),
   };
 }
 
@@ -20,7 +21,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tic-Tac-Toe</Text>
-      <Text>{JSON.stringify(state, null, 2)}</Text>
+      <Board board={state.board} />
       <StatusBar style="auto" />
     </View>
   );
